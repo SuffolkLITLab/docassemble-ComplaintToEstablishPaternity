@@ -663,10 +663,14 @@ review:
     button: |
       **child_first[0]**:
       ${ child_first[0] }
-  - Edit: child_current[0].age_in_years()
+  - Edit: child_current[0].age_in_years
     button: |
-      **child_current[0].birthdate**:
-      ${ child_current[0].age_in_years() }
+      **child_current[0].age_in_years**:
+      ${ child_current[0].age_in_years }
+  - Edit: child[0].birthdate
+    button: |
+      **child[0].bithdate**:
+      ${ child[0].birthdate }
   - Edit: plaintiff_middle_initial[0]
     button: |
       **plaintiff_middle_initial[0]**:

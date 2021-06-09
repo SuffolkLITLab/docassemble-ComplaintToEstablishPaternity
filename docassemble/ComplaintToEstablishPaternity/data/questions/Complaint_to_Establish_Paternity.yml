@@ -1,0 +1,882 @@
+---
+include:
+  - docassemble.AssemblyLine:al_package.yml
+  - docassemble.ALMassachusetts:al_massachusetts.yml
+  - docassemble.MassAccess:massaccess.yml
+---
+metadata:
+  title: |
+    Complaint to establish paternity
+  short title: |
+    Complaint to establish paternity
+  tags:
+    - FA-00-00-00-00
+---
+mandatory: True
+comment: |
+  This contains metadata that will not be overwritten if this YAML file is included in another
+  file. Each file gets its own key in the interview_metadata dictionary.
+  Most keys are not currently used at runtime, other than "allowed courts".
+code: |
+  interview_metadata
+  if not defined("interview_metadata['Complaint_to_Establish_Paternity']"):
+    interview_metadata.initializeObject("Complaint_to_Establish_Paternity")
+    interview_metadata["Complaint_to_Establish_Paternity"].update({
+      "al_weaver_version": "1.0.2",
+      "generated on": "2021-06-09",
+      "title": "Complaint to establish paternity",
+      "short title": "Complaint to establish paternity",
+      "description": "Complaint to establish paternity",
+      "original_form": "https://www.mass.gov/doc/complaint-to-establish-paternity-cjd-106",
+      "allowed courts": [
+        "Probate and Family Court",
+      ],
+      "categories": [
+        "FA-00-00-00-00",
+      ],        
+      "logic block variable": "interview_order_Complaint_to_Establish_Paternity",
+      "attachment block variable": "Complaint_to_Establish_Paternity_attachment",
+      "typical role": "unknown",
+    })
+---
+code: |
+  interview_short_title = "File a Complaint to Establish Paternity"
+---
+code: |
+  al_form_type = 'existing_case'
+---
+objects:
+  - defendant_last: ALPeopleList.using(there_are_any=True)
+  - plaintiff_or_attorney: ALPeopleList
+  - plaintiff_first: ALPeopleList.using(ask_number=True,target_number=1)
+  - child_middle_initial: ALPeopleList
+  - child_first: ALPeopleList.using(ask_number=True,target_number=1)
+  - plaintiff_last: ALPeopleList.using(there_are_any=True)
+  - child_current: ALPeopleList.using(there_are_any=True)
+  - primary: ALPeopleList.using(there_are_any=True)
+  - users: ALPeopleList.using(there_are_any=True)
+  - child_last: ALPeopleList.using(ask_number=True,target_number=1)
+  - defendant_middle_initial: ALPeopleList
+  - plaintiff_or_attorney_print: ALPeopleList
+  - defendant_first: ALPeopleList.using(ask_number=True,target_number=1)
+  - plaintiff_middle_initial: ALPeopleList
+---
+sections:
+  - review_Complaint_to_Establish_Paternity: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_Complaint_to_Establish_Paternity
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["Complaint_to_Establish_Paternity"]["allowed courts"]
+  nav.set_section('review_Complaint_to_Establish_Paternity')
+  # Below sets the user_role by asking a question.
+  # You can set user_role directly instead to either 'plaintiff' or 'defendant'
+  user_ask_role
+  Informational
+  division_name
+  plaintiff_address
+  parent_of_child_born_out_of_wedlock
+  child_date_of_birth
+  set_progress(14.29)
+  defendant_address
+  adjudicate_to_be_father_of_child
+  todays_date
+  plaintiff_or_attorney_print_signature
+  plaintiff_or_attorney_address
+  set_progress(28.57)
+  board_of_bar_overseers_number
+  current_page_number
+  docket_number
+  defendant_first[0]
+  plaintiff_last[0]
+  set_progress(42.86)
+  child_middle_initial[0]
+  plaintiff_first[0]
+  defendant_last[0]
+  defendant_middle_initial[0]
+  set_progress(57.14)
+  child_first[0]
+  child_current[0].age_in_years()
+  plaintiff_middle_initial[0]
+  primary[0].phone_number
+  child_last[0]
+  interview_order_Complaint_to_Establish_Paternity = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  Complaint_to_Establish_Paternity_intro
+  interview_order_Complaint_to_Establish_Paternity
+  signature_date
+  # Save anonymized interview statistics (customize the saved data below)
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  Complaint_to_Establish_Paternity_preview_question
+  basic_questions_signature_flow
+  plaintiff_or_attorney[0].signature
+  Complaint_to_Establish_Paternity_download
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Complaint_to_establish_paternity
+continue button field: Complaint_to_Establish_Paternity_intro
+question: |
+  Complaint to establish paternity
+subquestion: |
+  Complaint to establish paternity
+---
+id: Informational
+question: |
+  Informational
+subquestion: |
+  The following must be filed with this complaint:
+  
+  - A copy of the child's birth certificate
+  - Affidavit of Care and Custody (Form available at the courthouse)
+  
+  Please Note: You must file a separate complaint for each child.
+  
+  As of July 1, 2009 there is a filing fee of $100, plus surcharge ($15) except in cases filed by the IV-D agency.
+continue button field: Informational
+---
+id: Division
+question: |
+  Division
+subquestion: |
+  Please select which division you are located in
+fields:
+  - "Division name": division_name
+    maxlength: 58
+---
+id: Plantiff information
+question: |
+  Plantiff information
+subquestion: |
+  Provide Plaintiff full address
+fields:
+  - "Plaintiff address": plaintiff_address
+    maxlength: 23
+  - "Plaintiff apt": plaintiff_apt
+    maxlength: 14
+  - "Plaintiff city": plaintiff_city
+    input type: area
+    maxlength: 18
+  - "Plaintiff state": plaintiff_state
+    input type: area
+    maxlength: 8
+  - "Plaintiff zip code": plaintiff_zip_code
+    datatype: number
+---
+id: Plaintiff Relation
+question: |
+  Plaintiff Relation
+subquestion: |
+  Please select the Plaintiffs relationship to the child who complaint to establish paternity is referencing
+fields:
+  - "Parent of child born out of wedlock": parent_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Mother of child born out of wedlock": mother_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Father of child born out of wedlock": father_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Child born out of wedlock": child_born_out_of_wedlock
+    datatype: yesno
+  - "Other person in custody of child born out of wedlock": other_person_in_custody_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Guardian of child born out of wedlock": guardian_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Custodian of child born out of wedlock": custodian_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Parent or representative of parent of child born out of wedlock": parent_or_representative_of_parent_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Parent of parent of child born out of wedlock": parent_of_parent_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Personal representative of child born out of wedlock": personal_representative_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Parent or representative of mother of child born out of wedlock": parent_or_representative_of_mother_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Parent or representative of father of child born out of wedlock": parent_or_representative_of_father_of_child_born_out_of_wedlock
+    datatype: yesno
+  - "Department of children and families": department_of_children_and_families
+    datatype: yesno
+  - "An agency licensed under g l c twenty eight a": an_agency_licensed_under_g_l_c_twenty_eight_a
+    datatype: yesno
+  - "Department of revenue": department_of_revenue
+    datatype: yesno
+---
+id: Child information
+question: |
+  Child information
+subquestion: |
+  The child who is the subject of the complaint information:
+fields:
+  - "Child date of birth": child_date_of_birth
+    datatype: number
+  - "Child address": child_address
+    input type: area
+    maxlength: 32
+  - "Child apt number": child_apt_number
+    datatype: number
+  - "Child city": child_city
+    input type: area
+    maxlength: 21
+  - "Child state": child_state
+    input type: area
+    maxlength: 11
+  - "Child zip code": child_zip_code
+    datatype: number
+---
+id: Defendant information
+question: |
+  Defendant information
+subquestion: |
+  Defendants information
+fields:
+  - "Defendant address": defendant_address
+    input type: area
+    maxlength: 24
+  - "Defendant apt number": defendant_apt_number
+    datatype: number
+  - "Defendant city": defendant_city
+    input type: area
+    maxlength: 19
+  - "Defendant state": defendant_state
+    input type: area
+    maxlength: 7
+  - "Defendant zip code": defendant_zip_code
+    datatype: number
+  - "Defendant is mother of child": defendant_is_mother_of_child
+    datatype: yesno
+  - "Defendant is father of child": defendant_is_father_of_child
+    datatype: yesno
+---
+id: Plaintiff request
+question: |
+  Plaintiff request
+subquestion: |
+  The plaintiff request that the court:
+fields:
+  - "Adjudicate to be father of child": adjudicate_to_be_father_of_child
+    datatype: yesno
+  - "Adjudicate plaintiff to be father of child": adjudicate_plaintiff_to_be_father_of_child
+    datatype: yesno
+  - "Adjudicate defendant to be father of child": adjudicate_defendant_to_be_father_of_child
+    datatype: yesno
+  - "Order suitable amount of support for child": order_suitable_amount_of_support_for_child
+    datatype: yesno
+  - "Order plaintiff or defendant to help with health insurance for child benefit": order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit
+    datatype: yesno
+  - "Plaintiff must help with health insurance for child benefit": plaintiff_must_help_with_health_insurance_for_child_benefit
+    datatype: yesno
+  - "Defendant must help with health insurance for child benefit": defendant_must_help_with_health_insurance_for_child_benefit
+    datatype: yesno
+  - "Maintain health insurance for child benefit": maintain_health_insurance_for_child_benefit
+    datatype: yesno
+  - "Provide health insurance for child benefit": provide_health_insurance_for_child_benefit
+    datatype: yesno
+  - "Prohibit defendant from imposing restraint": prohibit_defendant_from_imposing_restraint
+    datatype: yesno
+  - "Restraint on plaintiff": restraint_on_plaintiff
+    datatype: yesno
+  - "Restraint on child": restraint_on_child
+    datatype: yesno
+  - "Grant custody of child": grant_custody_of_child
+    datatype: yesno
+  - "Plaintiff custody of child": plaintiff_custody_of_child
+    datatype: yesno
+  - "Defendant custody of child": defendant_custody_of_child
+    datatype: yesno
+  - "Grant parenting time with child": grant_parenting_time_with_child
+    datatype: yesno
+  - "Plaintiff parenting time with child": plaintiff_parenting_time_with_child
+    datatype: yesno
+  - "Defendant parenting time with child": defendant_parenting_time_with_child
+    datatype: yesno
+---
+id: Date
+question: |
+  Date
+fields:
+  - "Date of todays": todays_date
+    datatype: date
+---
+id: Signature
+question: |
+  Signature
+subquestion: |
+  Attorney or Plaintiff, if pro se
+fields:
+  - "Plaintiff or attorney print signature": plaintiff_or_attorney_print_signature
+    maxlength: 50
+---
+id: Attorney or Plaintiff if pro se information
+question: |
+  Attorney or Plaintiff, if pro se information
+subquestion: |
+  Include address and Primary Number
+fields:
+  - "Plaintiff or attorney address": plaintiff_or_attorney_address
+    input type: area
+    maxlength: 36
+  - "Plaintiff or attorney apt number": plaintiff_or_attorney_apt_number
+    datatype: number
+  - "Plaintiff or attorney city": plaintiff_or_attorney_city
+    input type: area
+    maxlength: 29
+  - "Plaintiff or attorney state": plaintiff_or_attorney_state
+    input type: area
+    maxlength: 8
+  - "Plaintiff or attorney city zip code": plaintiff_or_attorney_city_zip_code
+    datatype: number
+---
+id: BBO Number
+question: |
+  BBO Number
+subquestion: |
+  Board of Bar Overseer Number
+fields:
+  - "Board of bar overseers number": board_of_bar_overseers_number
+    datatype: number
+---
+id: Page Number
+question: |
+  Page Number
+subquestion: |
+  Indicated page number and total pages provided with complaint
+fields:
+  - "Current page number": current_page_number
+    datatype: number
+  - "Total page number": total_page_number
+    datatype: number
+---
+id: preview Complaint_to_Establish_Paternity
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_court_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Make changes" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_Complaint_to_Establish_Paternity'), label='Make changes', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: Complaint_to_Establish_Paternity_preview_question    
+---
+code: |
+  signature_fields = ['plaintiff_or_attorney[0].signature']
+---
+id: Complaint to Establish Paternity review screen
+event: review_Complaint_to_Establish_Paternity
+question: |
+  Review your answers
+review:
+  - Edit: division_name
+    button: |
+      **Division name**:
+      ${ division_name }
+  - Edit: plaintiff_address
+    button: |
+      **Plaintiff address**:
+      ${ plaintiff_address }
+  - Edit: plaintiff_apt
+    button: |
+      **Plaintiff apt**:
+      ${ plaintiff_apt }
+  - Edit: plaintiff_city
+    button: |
+      **Plaintiff city**:
+      > ${ single_paragraph(plaintiff_city) }
+  - Edit: plaintiff_state
+    button: |
+      **Plaintiff state**:
+      > ${ single_paragraph(plaintiff_state) }
+  - Edit: plaintiff_zip_code
+    button: |
+      **Plaintiff zip code**:
+      ${ plaintiff_zip_code }
+  - Edit: parent_of_child_born_out_of_wedlock
+    button: |
+      **Parent of child born out of wedlock**:
+      ${ word(yesno(parent_of_child_born_out_of_wedlock)) }
+  - Edit: mother_of_child_born_out_of_wedlock
+    button: |
+      **Mother of child born out of wedlock**:
+      ${ word(yesno(mother_of_child_born_out_of_wedlock)) }
+  - Edit: father_of_child_born_out_of_wedlock
+    button: |
+      **Father of child born out of wedlock**:
+      ${ word(yesno(father_of_child_born_out_of_wedlock)) }
+  - Edit: child_born_out_of_wedlock
+    button: |
+      **Child born out of wedlock**:
+      ${ word(yesno(child_born_out_of_wedlock)) }
+  - Edit: other_person_in_custody_of_child_born_out_of_wedlock
+    button: |
+      **Other person in custody of child born out of wedlock**:
+      ${ word(yesno(other_person_in_custody_of_child_born_out_of_wedlock)) }
+  - Edit: guardian_of_child_born_out_of_wedlock
+    button: |
+      **Guardian of child born out of wedlock**:
+      ${ word(yesno(guardian_of_child_born_out_of_wedlock)) }
+  - Edit: custodian_of_child_born_out_of_wedlock
+    button: |
+      **Custodian of child born out of wedlock**:
+      ${ word(yesno(custodian_of_child_born_out_of_wedlock)) }
+  - Edit: parent_or_representative_of_parent_of_child_born_out_of_wedlock
+    button: |
+      **Parent or representative of parent of child born out of wedlock**:
+      ${ word(yesno(parent_or_representative_of_parent_of_child_born_out_of_wedlock)) }
+  - Edit: parent_of_parent_of_child_born_out_of_wedlock
+    button: |
+      **Parent of parent of child born out of wedlock**:
+      ${ word(yesno(parent_of_parent_of_child_born_out_of_wedlock)) }
+  - Edit: personal_representative_of_child_born_out_of_wedlock
+    button: |
+      **Personal representative of child born out of wedlock**:
+      ${ word(yesno(personal_representative_of_child_born_out_of_wedlock)) }
+  - Edit: parent_or_representative_of_mother_of_child_born_out_of_wedlock
+    button: |
+      **Parent or representative of mother of child born out of wedlock**:
+      ${ word(yesno(parent_or_representative_of_mother_of_child_born_out_of_wedlock)) }
+  - Edit: parent_or_representative_of_father_of_child_born_out_of_wedlock
+    button: |
+      **Parent or representative of father of child born out of wedlock**:
+      ${ word(yesno(parent_or_representative_of_father_of_child_born_out_of_wedlock)) }
+  - Edit: department_of_children_and_families
+    button: |
+      **Department of children and families**:
+      ${ word(yesno(department_of_children_and_families)) }
+  - Edit: an_agency_licensed_under_g_l_c_twenty_eight_a
+    button: |
+      **An agency licensed under g l c twenty eight a**:
+      ${ word(yesno(an_agency_licensed_under_g_l_c_twenty_eight_a)) }
+  - Edit: department_of_revenue
+    button: |
+      **Department of revenue**:
+      ${ word(yesno(department_of_revenue)) }
+  - Edit: child_date_of_birth
+    button: |
+      **Child date of birth**:
+      ${ child_date_of_birth }
+  - Edit: child_address
+    button: |
+      **Child address**:
+      > ${ single_paragraph(child_address) }
+  - Edit: child_apt_number
+    button: |
+      **Child apt number**:
+      ${ child_apt_number }
+  - Edit: child_city
+    button: |
+      **Child city**:
+      > ${ single_paragraph(child_city) }
+  - Edit: child_state
+    button: |
+      **Child state**:
+      > ${ single_paragraph(child_state) }
+  - Edit: child_zip_code
+    button: |
+      **Child zip code**:
+      ${ child_zip_code }
+  - Edit: defendant_address
+    button: |
+      **Defendant address**:
+      > ${ single_paragraph(defendant_address) }
+  - Edit: defendant_apt_number
+    button: |
+      **Defendant apt number**:
+      ${ defendant_apt_number }
+  - Edit: defendant_city
+    button: |
+      **Defendant city**:
+      > ${ single_paragraph(defendant_city) }
+  - Edit: defendant_state
+    button: |
+      **Defendant state**:
+      > ${ single_paragraph(defendant_state) }
+  - Edit: defendant_zip_code
+    button: |
+      **Defendant zip code**:
+      ${ defendant_zip_code }
+  - Edit: defendant_is_mother_of_child
+    button: |
+      **Defendant is mother of child**:
+      ${ word(yesno(defendant_is_mother_of_child)) }
+  - Edit: defendant_is_father_of_child
+    button: |
+      **Defendant is father of child**:
+      ${ word(yesno(defendant_is_father_of_child)) }
+  - Edit: adjudicate_to_be_father_of_child
+    button: |
+      **Adjudicate to be father of child**:
+      ${ word(yesno(adjudicate_to_be_father_of_child)) }
+  - Edit: adjudicate_plaintiff_to_be_father_of_child
+    button: |
+      **Adjudicate plaintiff to be father of child**:
+      ${ word(yesno(adjudicate_plaintiff_to_be_father_of_child)) }
+  - Edit: adjudicate_defendant_to_be_father_of_child
+    button: |
+      **Adjudicate defendant to be father of child**:
+      ${ word(yesno(adjudicate_defendant_to_be_father_of_child)) }
+  - Edit: order_suitable_amount_of_support_for_child
+    button: |
+      **Order suitable amount of support for child**:
+      ${ word(yesno(order_suitable_amount_of_support_for_child)) }
+  - Edit: order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit
+    button: |
+      **Order plaintiff or defendant to help with health insurance for child benefit**:
+      ${ word(yesno(order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit)) }
+  - Edit: plaintiff_must_help_with_health_insurance_for_child_benefit
+    button: |
+      **Plaintiff must help with health insurance for child benefit**:
+      ${ word(yesno(plaintiff_must_help_with_health_insurance_for_child_benefit)) }
+  - Edit: defendant_must_help_with_health_insurance_for_child_benefit
+    button: |
+      **Defendant must help with health insurance for child benefit**:
+      ${ word(yesno(defendant_must_help_with_health_insurance_for_child_benefit)) }
+  - Edit: maintain_health_insurance_for_child_benefit
+    button: |
+      **Maintain health insurance for child benefit**:
+      ${ word(yesno(maintain_health_insurance_for_child_benefit)) }
+  - Edit: provide_health_insurance_for_child_benefit
+    button: |
+      **Provide health insurance for child benefit**:
+      ${ word(yesno(provide_health_insurance_for_child_benefit)) }
+  - Edit: prohibit_defendant_from_imposing_restraint
+    button: |
+      **Prohibit defendant from imposing restraint**:
+      ${ word(yesno(prohibit_defendant_from_imposing_restraint)) }
+  - Edit: restraint_on_plaintiff
+    button: |
+      **Restraint on plaintiff**:
+      ${ word(yesno(restraint_on_plaintiff)) }
+  - Edit: restraint_on_child
+    button: |
+      **Restraint on child**:
+      ${ word(yesno(restraint_on_child)) }
+  - Edit: grant_custody_of_child
+    button: |
+      **Grant custody of child**:
+      ${ word(yesno(grant_custody_of_child)) }
+  - Edit: plaintiff_custody_of_child
+    button: |
+      **Plaintiff custody of child**:
+      ${ word(yesno(plaintiff_custody_of_child)) }
+  - Edit: defendant_custody_of_child
+    button: |
+      **Defendant custody of child**:
+      ${ word(yesno(defendant_custody_of_child)) }
+  - Edit: grant_parenting_time_with_child
+    button: |
+      **Grant parenting time with child**:
+      ${ word(yesno(grant_parenting_time_with_child)) }
+  - Edit: plaintiff_parenting_time_with_child
+    button: |
+      **Plaintiff parenting time with child**:
+      ${ word(yesno(plaintiff_parenting_time_with_child)) }
+  - Edit: defendant_parenting_time_with_child
+    button: |
+      **Defendant parenting time with child**:
+      ${ word(yesno(defendant_parenting_time_with_child)) }
+  - Edit: todays_date
+    button: |
+      **Date of todays**:
+      ${ todays_date }
+  - Edit: plaintiff_or_attorney_print_signature
+    button: |
+      **Plaintiff or attorney print signature**:
+      ${ plaintiff_or_attorney_print_signature }
+  - Edit: plaintiff_or_attorney_address
+    button: |
+      **Plaintiff or attorney address**:
+      > ${ single_paragraph(plaintiff_or_attorney_address) }
+  - Edit: plaintiff_or_attorney_apt_number
+    button: |
+      **Plaintiff or attorney apt number**:
+      ${ plaintiff_or_attorney_apt_number }
+  - Edit: plaintiff_or_attorney_city
+    button: |
+      **Plaintiff or attorney city**:
+      > ${ single_paragraph(plaintiff_or_attorney_city) }
+  - Edit: plaintiff_or_attorney_state
+    button: |
+      **Plaintiff or attorney state**:
+      > ${ single_paragraph(plaintiff_or_attorney_state) }
+  - Edit: plaintiff_or_attorney_city_zip_code
+    button: |
+      **Plaintiff or attorney city zip code**:
+      ${ plaintiff_or_attorney_city_zip_code }
+  - Edit: board_of_bar_overseers_number
+    button: |
+      **Board of bar overseers number**:
+      ${ board_of_bar_overseers_number }
+  - Edit: current_page_number
+    button: |
+      **Current page number**:
+      ${ current_page_number }
+  - Edit: total_page_number
+    button: |
+      **Total page number**:
+      ${ total_page_number }
+  - Edit: docket_number
+    button: |
+      **docket_number**:
+      ${ docket_number }
+  - Edit: defendant_first[0]
+    button: |
+      **defendant_first[0]**:
+      ${ defendant_first[0] }
+  - Edit: plaintiff_last[0]
+    button: |
+      **plaintiff_last[0]**:
+      ${ plaintiff_last[0] }
+  - Edit: plaintiff_or_attorney[0].signature
+    button: |
+      **plaintiff_or_attorney[0].signature**:
+      ${ plaintiff_or_attorney[0].signature }
+  - Edit: child_middle_initial[0]
+    button: |
+      **child_middle_initial[0]**:
+      ${ child_middle_initial[0] }
+  - Edit: plaintiff_first[0]
+    button: |
+      **plaintiff_first[0]**:
+      ${ plaintiff_first[0] }
+  - Edit: defendant_last[0]
+    button: |
+      **defendant_last[0]**:
+      ${ defendant_last[0] }
+  - Edit: defendant_middle_initial[0]
+    button: |
+      **defendant_middle_initial[0]**:
+      ${ defendant_middle_initial[0] }
+  - Edit: child_first[0]
+    button: |
+      **child_first[0]**:
+      ${ child_first[0] }
+  - Edit: child_current[0].age_in_years()
+    button: |
+      **child_current[0].birthdate**:
+      ${ child_current[0].age_in_years() }
+  - Edit: plaintiff_middle_initial[0]
+    button: |
+      **plaintiff_middle_initial[0]**:
+      ${ plaintiff_middle_initial[0] }
+  - Edit: primary[0].phone_number
+    button: |
+      **primary[0].phone_number**:
+      ${ primary[0].phone_number }
+  - Edit: child_last[0]
+    button: |
+      **child_last[0]**:
+      ${ child_last[0] }
+---
+id: download Complaint_to_Establish_Paternity
+event: Complaint_to_Establish_Paternity_download
+question: |
+  Your form is ready to download.
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Make changes" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_Complaint_to_Establish_Paternity'), label='Make changes', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+objects:
+  - Post_interview_instructions: ALDocument.using(title="Instructions", filename="Complaint_to_Establish_Paternity_next_steps.docx", enabled=True, has_addendum=False)
+  - Complaint_to_Establish_Paternity_attachment: ALDocument.using(title="Complaint to establish paternity", filename="Complaint_to_Establish_Paternity_New_Labelled.pdf", enabled=True, has_addendum=False)
+  - Post_interview_instructions: ALDocument.using(title="Instructions", filename="Complaint_to_Establish_Paternity_next_steps.docx", enabled=True, has_addendum=False)
+  - Complaint_to_Establish_Paternity_attachment: ALDocument.using(title="Complaint to establish paternity", filename="Complaint_to_Establish_Paternity_New_Labelled.pdf", enabled=True, has_addendum=False)
+---
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[Post_interview_instructions,Complaint_to_Establish_Paternity_attachment], filename="Complaint_to_Establish_Paternity_package.pdf", title="All forms to download for your records")
+  - al_court_bundle: ALDocumentBundle.using(elements=[Complaint_to_Establish_Paternity_attachment], filename="Complaint_to_Establish_Paternity_package.pdf", title="All forms to download for your records")
+---
+attachments:
+  - name: Post interview instructions
+    filename: Post-interview-instructions     
+    variable name: Post_interview_instructions[i]        
+    docx template file: Complaint_to_Establish_Paternity_next_steps.docx
+  - name: Complaint to Establish Paternity attachment
+    filename: Complaint_to_Establish_Paternity     
+    variable name: Complaint_to_Establish_Paternity_attachment[i]        
+    skip undefined: True
+    pdf template file: Complaint_to_Establish_Paternity_New_Labelled.pdf
+    fields:
+      - "docket_number": ${ docket_number }
+      - "defendant_first_name": ${ defendant_first[0] }
+      - "plaintiff_last_name": ${ plaintiff_last[0] }
+      - "plaintiff_or_attorney_signature": ${ plaintiff_or_attorney[0].signature }
+      - "child_middle_initial_name": ${ child_middle_initial[0] }
+      - "plaintiff_first_name": ${ plaintiff_first[0] }
+      - "defendant_last_name": ${ defendant_last[0] }
+      - "defendant_middle_initial_name": ${ defendant_middle_initial[0] }
+      - "child_first_name": ${ child_first[0] }
+      - "child_current_age": ${ child_current[0].age_in_years() }
+      - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial[0] }
+      - "primary_phone_number": ${ primary[0].phone_number }
+      - "child_last_name": ${ child_last[0] }
+      - "division_name": ${ division_name }
+      - "plaintiff_address": ${ plaintiff_address }
+      - "plaintiff_apt": ${ plaintiff_apt }
+      - "plaintiff_city": ${ plaintiff_city }
+      - "plaintiff_state": ${ plaintiff_state }
+      - "plaintiff_zip_code": ${ "{:,.2f}".format(plaintiff_zip_code) }
+      - "parent_of_child_born_out_of_wedlock": ${ parent_of_child_born_out_of_wedlock }
+      - "mother_of_child_born_out_of_wedlock": ${ mother_of_child_born_out_of_wedlock }
+      - "father_of_child_born_out_of_wedlock": ${ father_of_child_born_out_of_wedlock }
+      - "child_born_out_of_wedlock": ${ child_born_out_of_wedlock }
+      - "other_person_in_custody_of_child_born_out_of_wedlock": ${ other_person_in_custody_of_child_born_out_of_wedlock }
+      - "guardian_of_child_born_out_of_wedlock": ${ guardian_of_child_born_out_of_wedlock }
+      - "custodian_of_child_born_out_of_wedlock": ${ custodian_of_child_born_out_of_wedlock }
+      - "parent_or_representative_of_parent_of_child_born_out_of_wedlock": ${ parent_or_representative_of_parent_of_child_born_out_of_wedlock }
+      - "parent_of_parent_of_child_born_out_of_wedlock": ${ parent_of_parent_of_child_born_out_of_wedlock }
+      - "personal_representative_of_child_born_out_of_wedlock": ${ personal_representative_of_child_born_out_of_wedlock }
+      - "parent_or_representative_of_mother_of_child_born_out_of_wedlock": ${ parent_or_representative_of_mother_of_child_born_out_of_wedlock }
+      - "parent_or_representative_of_father_of_child_born_out_of_wedlock": ${ parent_or_representative_of_father_of_child_born_out_of_wedlock }
+      - "department_of_children_and_families": ${ department_of_children_and_families }
+      - "an_agency_licensed_under_g_l_c_twenty_eight_a": ${ an_agency_licensed_under_g_l_c_twenty_eight_a }
+      - "department_of_revenue": ${ department_of_revenue }
+      - "child_date_of_birth": ${ "{:,.2f}".format(child_date_of_birth) }
+      - "child_address": ${ child_address }
+      - "child_apt_number": ${ "{:,.2f}".format(child_apt_number) }
+      - "child_city": ${ child_city }
+      - "child_state": ${ child_state }
+      - "child_zip_code": ${ "{:,.2f}".format(child_zip_code) }
+      - "defendant_address": ${ defendant_address }
+      - "defendant_apt_number": ${ "{:,.2f}".format(defendant_apt_number) }
+      - "defendant_city": ${ defendant_city }
+      - "defendant_state": ${ defendant_state }
+      - "defendant_zip_code": ${ "{:,.2f}".format(defendant_zip_code) }
+      - "defendant_is_mother_of_child": ${ defendant_is_mother_of_child }
+      - "defendant_is_father_of_child": ${ defendant_is_father_of_child }
+      - "adjudicate_to_be_father_of_child": ${ adjudicate_to_be_father_of_child }
+      - "adjudicate_plaintiff_to_be_father_of_child": ${ adjudicate_plaintiff_to_be_father_of_child }
+      - "adjudicate_defendant_to_be_father_of_child": ${ adjudicate_defendant_to_be_father_of_child }
+      - "order_suitable_amount_of_support_for_child": ${ order_suitable_amount_of_support_for_child }
+      - "order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit": ${ order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit }
+      - "plaintiff_must_help_with_health_insurance_for_child_benefit": ${ plaintiff_must_help_with_health_insurance_for_child_benefit }
+      - "defendant_must_help_with_health_insurance_for_child_benefit": ${ defendant_must_help_with_health_insurance_for_child_benefit }
+      - "maintain_health_insurance_for_child_benefit": ${ maintain_health_insurance_for_child_benefit }
+      - "provide_health_insurance_for_child_benefit": ${ provide_health_insurance_for_child_benefit }
+      - "prohibit_defendant_from_imposing_restraint": ${ prohibit_defendant_from_imposing_restraint }
+      - "restraint_on_plaintiff": ${ restraint_on_plaintiff }
+      - "restraint_on_child": ${ restraint_on_child }
+      - "grant_custody_of_child": ${ grant_custody_of_child }
+      - "plaintiff_custody_of_child": ${ plaintiff_custody_of_child }
+      - "defendant_custody_of_child": ${ defendant_custody_of_child }
+      - "grant_parenting_time_with_child": ${ grant_parenting_time_with_child }
+      - "plaintiff_parenting_time_with_child": ${ plaintiff_parenting_time_with_child }
+      - "defendant_parenting_time_with_child": ${ defendant_parenting_time_with_child }
+      - "todays_date": ${ todays_date }
+      - "plaintiff_or_attorney_print_signature": ${ plaintiff_or_attorney_print_signature }
+      - "plaintiff_or_attorney_address": ${ plaintiff_or_attorney_address }
+      - "plaintiff_or_attorney_apt_number": ${ "{:,.2f}".format(plaintiff_or_attorney_apt_number) }
+      - "plaintiff_or_attorney_city": ${ plaintiff_or_attorney_city }
+      - "plaintiff_or_attorney_state": ${ plaintiff_or_attorney_state }
+      - "plaintiff_or_attorney_city_zip_code": ${ "{:,.2f}".format(plaintiff_or_attorney_city_zip_code) }
+      - "board_of_bar_overseers_number": ${ "{:,.2f}".format(board_of_bar_overseers_number) }
+      - "current_page_number": ${ "{:,.2f}".format(current_page_number) }
+      - "total_page_number": ${ "{:,.2f}".format(total_page_number) }
+  - name: Post interview instructions
+    filename: Post-interview-instructions     
+    variable name: Post_interview_instructions[i]        
+    docx template file: Complaint_to_Establish_Paternity_next_steps.docx
+  - name: Complaint to Establish Paternity attachment
+    filename: Complaint_to_Establish_Paternity     
+    variable name: Complaint_to_Establish_Paternity_attachment[i]        
+    skip undefined: True
+    pdf template file: Complaint_to_Establish_Paternity_New_Labelled.pdf
+    fields:
+      - "docket_number": ${ docket_number }
+      - "defendant_first_name": ${ defendant_first[0] }
+      - "plaintiff_last_name": ${ plaintiff_last[0] }
+      - "plaintiff_or_attorney_signature": ${ plaintiff_or_attorney[0].signature }
+      - "child_middle_initial_name": ${ child_middle_initial[0] }
+      - "plaintiff_first_name": ${ plaintiff_first[0] }
+      - "defendant_last_name": ${ defendant_last[0] }
+      - "defendant_middle_initial_name": ${ defendant_middle_initial[0] }
+      - "child_first_name": ${ child_first[0] }
+      - "child_current_age": ${ child_current[0].age_in_years() }
+      - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial[0] }
+      - "primary_phone_number": ${ primary[0].phone_number }
+      - "child_last_name": ${ child_last[0] }
+      - "division_name": ${ division_name }
+      - "plaintiff_address": ${ plaintiff_address }
+      - "plaintiff_apt": ${ plaintiff_apt }
+      - "plaintiff_city": ${ plaintiff_city }
+      - "plaintiff_state": ${ plaintiff_state }
+      - "plaintiff_zip_code": ${ "{:,.2f}".format(plaintiff_zip_code) }
+      - "parent_of_child_born_out_of_wedlock": ${ parent_of_child_born_out_of_wedlock }
+      - "mother_of_child_born_out_of_wedlock": ${ mother_of_child_born_out_of_wedlock }
+      - "father_of_child_born_out_of_wedlock": ${ father_of_child_born_out_of_wedlock }
+      - "child_born_out_of_wedlock": ${ child_born_out_of_wedlock }
+      - "other_person_in_custody_of_child_born_out_of_wedlock": ${ other_person_in_custody_of_child_born_out_of_wedlock }
+      - "guardian_of_child_born_out_of_wedlock": ${ guardian_of_child_born_out_of_wedlock }
+      - "custodian_of_child_born_out_of_wedlock": ${ custodian_of_child_born_out_of_wedlock }
+      - "parent_or_representative_of_parent_of_child_born_out_of_wedlock": ${ parent_or_representative_of_parent_of_child_born_out_of_wedlock }
+      - "parent_of_parent_of_child_born_out_of_wedlock": ${ parent_of_parent_of_child_born_out_of_wedlock }
+      - "personal_representative_of_child_born_out_of_wedlock": ${ personal_representative_of_child_born_out_of_wedlock }
+      - "parent_or_representative_of_mother_of_child_born_out_of_wedlock": ${ parent_or_representative_of_mother_of_child_born_out_of_wedlock }
+      - "parent_or_representative_of_father_of_child_born_out_of_wedlock": ${ parent_or_representative_of_father_of_child_born_out_of_wedlock }
+      - "department_of_children_and_families": ${ department_of_children_and_families }
+      - "an_agency_licensed_under_g_l_c_twenty_eight_a": ${ an_agency_licensed_under_g_l_c_twenty_eight_a }
+      - "department_of_revenue": ${ department_of_revenue }
+      - "child_date_of_birth": ${ "{:,.2f}".format(child_date_of_birth) }
+      - "child_address": ${ child_address }
+      - "child_apt_number": ${ "{:,.2f}".format(child_apt_number) }
+      - "child_city": ${ child_city }
+      - "child_state": ${ child_state }
+      - "child_zip_code": ${ "{:,.2f}".format(child_zip_code) }
+      - "defendant_address": ${ defendant_address }
+      - "defendant_apt_number": ${ "{:,.2f}".format(defendant_apt_number) }
+      - "defendant_city": ${ defendant_city }
+      - "defendant_state": ${ defendant_state }
+      - "defendant_zip_code": ${ "{:,.2f}".format(defendant_zip_code) }
+      - "defendant_is_mother_of_child": ${ defendant_is_mother_of_child }
+      - "defendant_is_father_of_child": ${ defendant_is_father_of_child }
+      - "adjudicate_to_be_father_of_child": ${ adjudicate_to_be_father_of_child }
+      - "adjudicate_plaintiff_to_be_father_of_child": ${ adjudicate_plaintiff_to_be_father_of_child }
+      - "adjudicate_defendant_to_be_father_of_child": ${ adjudicate_defendant_to_be_father_of_child }
+      - "order_suitable_amount_of_support_for_child": ${ order_suitable_amount_of_support_for_child }
+      - "order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit": ${ order_plaintiff_or_defendant_to_help_with_health_insurance_for_child_benefit }
+      - "plaintiff_must_help_with_health_insurance_for_child_benefit": ${ plaintiff_must_help_with_health_insurance_for_child_benefit }
+      - "defendant_must_help_with_health_insurance_for_child_benefit": ${ defendant_must_help_with_health_insurance_for_child_benefit }
+      - "maintain_health_insurance_for_child_benefit": ${ maintain_health_insurance_for_child_benefit }
+      - "provide_health_insurance_for_child_benefit": ${ provide_health_insurance_for_child_benefit }
+      - "prohibit_defendant_from_imposing_restraint": ${ prohibit_defendant_from_imposing_restraint }
+      - "restraint_on_plaintiff": ${ restraint_on_plaintiff }
+      - "restraint_on_child": ${ restraint_on_child }
+      - "grant_custody_of_child": ${ grant_custody_of_child }
+      - "plaintiff_custody_of_child": ${ plaintiff_custody_of_child }
+      - "defendant_custody_of_child": ${ defendant_custody_of_child }
+      - "grant_parenting_time_with_child": ${ grant_parenting_time_with_child }
+      - "plaintiff_parenting_time_with_child": ${ plaintiff_parenting_time_with_child }
+      - "defendant_parenting_time_with_child": ${ defendant_parenting_time_with_child }
+      - "todays_date": ${ todays_date }
+      - "plaintiff_or_attorney_print_signature": ${ plaintiff_or_attorney_print_signature }
+      - "plaintiff_or_attorney_address": ${ plaintiff_or_attorney_address }
+      - "plaintiff_or_attorney_apt_number": ${ "{:,.2f}".format(plaintiff_or_attorney_apt_number) }
+      - "plaintiff_or_attorney_city": ${ plaintiff_or_attorney_city }
+      - "plaintiff_or_attorney_state": ${ plaintiff_or_attorney_state }
+      - "plaintiff_or_attorney_city_zip_code": ${ "{:,.2f}".format(plaintiff_or_attorney_city_zip_code) }
+      - "board_of_bar_overseers_number": ${ "{:,.2f}".format(board_of_bar_overseers_number) }
+      - "current_page_number": ${ "{:,.2f}".format(current_page_number) }
+      - "total_page_number": ${ "{:,.2f}".format(total_page_number) }

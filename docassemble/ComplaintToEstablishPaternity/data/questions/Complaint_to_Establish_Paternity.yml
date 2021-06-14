@@ -128,12 +128,11 @@ id: Complaint_to_establish_paternity
 continue button field: Complaint_to_Establish_Paternity_intro
 question: |
   Complaint to establish paternity
-subquestion: |
-  Complaint to establish paternity
+
 ---
 id: Informational
 question: |
-  Informational
+  Additional forms required with complaint
 subquestion: |
   The following must be filed with this complaint:
   
@@ -214,7 +213,7 @@ id: Child information
 question: |
   Child information
 subquestion: |
-  The child who is the subject of the complaint information:
+  The child who is the subject of the complaint:
 fields:
   - "Child date of birth": child_date_of_birth
     datatype: number

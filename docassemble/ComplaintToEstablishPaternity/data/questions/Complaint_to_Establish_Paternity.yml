@@ -78,7 +78,6 @@ code: |
   Informational
   division_name
   plaintiff_address
-  parent_of_child_born_out_of_wedlock
   child_date_of_birth
   set_progress(14.29)
   defendant_address
@@ -144,14 +143,25 @@ subquestion: |
   As of July 1, 2009 there is a filing fee of $100, plus surcharge ($15) except in cases filed by the IV-D agency.
 continue button field: Informational
 ---
-id: Division
 question: |
-  Division
-subquestion: |
-  Please select which division you are located in
+  Choose Division
 fields:
-  - "Division name": division_name
-    maxlength: 58
+    - Court division: division_name
+      choices:
+        - Barnstable
+        - Berkshire
+        - Bristol
+        - Dukes
+        - Essex 
+        - Franklin
+        - Hampden
+        - Hampshire
+        - Middlesex
+        - Nantucket
+        - Norfork
+        - Plymouth
+        - Suffolk
+        - Worcester
 ---
 id: Plantiff information
 question: |
@@ -172,42 +182,19 @@ fields:
   - "Plaintiff zip code": plaintiff_zip_code
     datatype: number
 ---
-id: Plaintiff Relation
 question: |
-  Plaintiff Relation
-subquestion: |
-  Please select the Plaintiffs relationship to the child who complaint to establish paternity is referencing
+  Plantiff Relation to Child.
 fields:
-  - "Parent of child born out of wedlock": parent_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Mother of child born out of wedlock": mother_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Father of child born out of wedlock": father_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Child born out of wedlock": child_born_out_of_wedlock
-    datatype: yesno
-  - "Other person in custody of child born out of wedlock": other_person_in_custody_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Guardian of child born out of wedlock": guardian_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Custodian of child born out of wedlock": custodian_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent or representative of parent of child born out of wedlock": parent_or_representative_of_parent_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent of parent of child born out of wedlock": parent_of_parent_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Personal representative of child born out of wedlock": personal_representative_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent or representative of mother of child born out of wedlock": parent_or_representative_of_mother_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent or representative of father of child born out of wedlock": parent_or_representative_of_father_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Department of children and families": department_of_children_and_families
-    datatype: yesno
-  - "An agency licensed under g l c twenty eight a": an_agency_licensed_under_g_l_c_twenty_eight_a
-    datatype: yesno
-  - "Department of revenue": department_of_revenue
-    datatype: yesno
+  - Relationship to child: relationship
+    choices:
+      - Mother of Child 
+      - Father of Child
+      - Guardian or Custodian of Child
+      - Personal Representative of Child
+      - Personal Representative for mother/father of child
+      - Department of children and families
+      - An agency licensed under GLC 28a
+      - Department of revenue
 ---
 id: Child information
 question: |
@@ -402,10 +389,6 @@ review:
     button: |
       **Plaintiff zip code**:
       ${ plaintiff_zip_code }
-  - Edit: parent_of_child_born_out_of_wedlock
-    button: |
-      **Parent of child born out of wedlock**:
-      ${ word(yesno(parent_of_child_born_out_of_wedlock)) }
   - Edit: mother_of_child_born_out_of_wedlock
     button: |
       **Mother of child born out of wedlock**:

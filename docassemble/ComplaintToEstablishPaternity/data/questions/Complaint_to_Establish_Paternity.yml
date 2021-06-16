@@ -169,16 +169,20 @@ question: |
 subquestion: |
   Provide Plaintiff full address
 fields:
+  - "Plantiff first name": plaintiff_first
+    maxlength: 25
+  - "Plaintiff last name": plaintiff_last
+    maxlength: 25
   - "Plaintiff address": plaintiff_address
     maxlength: 23
   - "Plaintiff apt": plaintiff_apt
-    maxlength: 14
+    maxlength: 5
   - "Plaintiff city": plaintiff_city
     input type: area
-    maxlength: 18
+    maxlength: 15
   - "Plaintiff state": plaintiff_state
     input type: area
-    maxlength: 8
+    maxlength: 2
   - "Plaintiff zip code": plaintiff_zip_code
     datatype: number
 ---
@@ -202,6 +206,10 @@ question: |
 subquestion: |
   The child who is the subject of the complaint:
 fields:
+  - "Child first name": child_first
+    maxlength: 15
+  - "Child last name": child_last
+    maxlength: 15
   - "Child date of birth": child_date_of_birth
     datatype: number
   - "Child address": child_address
@@ -224,6 +232,10 @@ question: |
 subquestion: |
   Defendants information
 fields:
+  - "Defendant first name": defendant_first
+    maxlength: 15
+  - "Defendant last name": defendant_last
+    maxlength: 15
   - "Defendant address": defendant_address
     input type: area
     maxlength: 24
@@ -298,27 +310,27 @@ question: |
 subquestion: |
   Attorney or Plaintiff, if pro se
 fields:
-  - "Plaintiff or attorney print signature": plaintiff_or_attorney_print_signature
-    maxlength: 50
+  - "Attorney name, or Plantiff, if pro se": plaintiff_or_attorney_print_signature
+    maxlength: 30
 ---
 id: Attorney or Plaintiff if pro se information
 question: |
   Attorney or Plaintiff, if pro se information
 subquestion: |
-  Include address and Primary Number
+  If you are self-representing, include your information in place of attorney information. 
 fields:
-  - "Plaintiff or attorney address": plaintiff_or_attorney_address
+  - "Attorney address": plaintiff_or_attorney_address
     input type: area
     maxlength: 36
-  - "Plaintiff or attorney apt number": plaintiff_or_attorney_apt_number
+  - "Attorney apt number": plaintiff_or_attorney_apt_number
     datatype: number
-  - "Plaintiff or attorney city": plaintiff_or_attorney_city
+  - "Attorney city": plaintiff_or_attorney_city
     input type: area
     maxlength: 29
-  - "Plaintiff or attorney state": plaintiff_or_attorney_state
+  - "Attorney state": plaintiff_or_attorney_state
     input type: area
     maxlength: 8
-  - "Plaintiff or attorney city zip code": plaintiff_or_attorney_city_zip_code
+  - "Attorney city zip code": plaintiff_or_attorney_city_zip_code
     datatype: number
 ---
 id: BBO Number
@@ -338,7 +350,7 @@ subquestion: |
 fields:
   - "Current page number": current_page_number
     datatype: number
-  - "Total page number": total_page_number
+  - "Total pages, including attatchments": total_page_number
     datatype: number
 ---
 id: preview Complaint_to_Establish_Paternity

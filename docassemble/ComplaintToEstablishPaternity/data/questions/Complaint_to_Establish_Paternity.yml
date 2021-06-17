@@ -78,7 +78,6 @@ code: |
   Informational
   division_name
   plaintiff_address
-  parent_of_child_born_out_of_wedlock
   child_date_of_birth
   set_progress(14.29)
   defendant_address
@@ -130,12 +129,11 @@ id: Complaint_to_establish_paternity
 continue button field: Complaint_to_Establish_Paternity_intro
 question: |
   Complaint to establish paternity
-subquestion: |
-  Complaint to establish paternity
+
 ---
 id: Informational
 question: |
-  Informational
+  Additional forms required with complaint
 subquestion: |
   The following must be filed with this complaint:
   
@@ -147,14 +145,25 @@ subquestion: |
   As of July 1, 2009 there is a filing fee of $100, plus surcharge ($15) except in cases filed by the IV-D agency.
 continue button field: Informational
 ---
-id: Division
 question: |
-  Division
-subquestion: |
-  Please select which division you are located in
+  Choose Division
 fields:
-  - "Division name": division_name
-    maxlength: 58
+    - Court division: division_name
+      choices:
+        - Barnstable
+        - Berkshire
+        - Bristol
+        - Dukes
+        - Essex 
+        - Franklin
+        - Hampden
+        - Hampshire
+        - Middlesex
+        - Nantucket
+        - Norfork
+        - Plymouth
+        - Suffolk
+        - Worcester
 ---
 id: Plantiff information
 question: |
@@ -162,62 +171,47 @@ question: |
 subquestion: |
   Provide Plaintiff full address
 fields:
+  - "Plantiff first name": plaintiff_first
+    maxlength: 25
+  - "Plaintiff last name": plaintiff_last
+    maxlength: 25
   - "Plaintiff address": plaintiff_address
     maxlength: 23
   - "Plaintiff apt": plaintiff_apt
-    maxlength: 14
+    maxlength: 5
   - "Plaintiff city": plaintiff_city
     input type: area
-    maxlength: 18
+    maxlength: 15
   - "Plaintiff state": plaintiff_state
     input type: area
-    maxlength: 8
+    maxlength: 2
   - "Plaintiff zip code": plaintiff_zip_code
     datatype: number
 ---
-id: Plaintiff Relation
 question: |
-  Plaintiff Relation
-subquestion: |
-  Please select the Plaintiffs relationship to the child who complaint to establish paternity is referencing
+  Plantiff Relation to Child.
 fields:
-  - "Parent of child born out of wedlock": parent_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Mother of child born out of wedlock": mother_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Father of child born out of wedlock": father_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Child born out of wedlock": child_born_out_of_wedlock
-    datatype: yesno
-  - "Other person in custody of child born out of wedlock": other_person_in_custody_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Guardian of child born out of wedlock": guardian_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Custodian of child born out of wedlock": custodian_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent or representative of parent of child born out of wedlock": parent_or_representative_of_parent_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent of parent of child born out of wedlock": parent_of_parent_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Personal representative of child born out of wedlock": personal_representative_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent or representative of mother of child born out of wedlock": parent_or_representative_of_mother_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Parent or representative of father of child born out of wedlock": parent_or_representative_of_father_of_child_born_out_of_wedlock
-    datatype: yesno
-  - "Department of children and families": department_of_children_and_families
-    datatype: yesno
-  - "An agency licensed under g l c twenty eight a": an_agency_licensed_under_g_l_c_twenty_eight_a
-    datatype: yesno
-  - "Department of revenue": department_of_revenue
-    datatype: yesno
+  - Relationship to child: relationship
+    choices:
+      - Mother of Child 
+      - Father of Child
+      - Guardian or Custodian of Child
+      - Personal Representative of Child
+      - Personal Representative for mother/father of child
+      - Department of children and families
+      - An agency licensed under GLC 28a
+      - Department of revenue
 ---
 id: Child information
 question: |
   Child information
 subquestion: |
-  The child who is the subject of the complaint information:
+  The child who is the subject of the complaint:
 fields:
+  - "Child first name": child_first
+    maxlength: 15
+  - "Child last name": child_last
+    maxlength: 15
   - "Child date of birth": child_date_of_birth
     datatype: number
   - "Child address": child_address
@@ -240,6 +234,10 @@ question: |
 subquestion: |
   Defendants information
 fields:
+  - "Defendant first name": defendant_first
+    maxlength: 15
+  - "Defendant last name": defendant_last
+    maxlength: 15
   - "Defendant address": defendant_address
     input type: area
     maxlength: 24
@@ -314,27 +312,27 @@ question: |
 subquestion: |
   Attorney or Plaintiff, if pro se
 fields:
-  - "Plaintiff or attorney print signature": plaintiff_or_attorney_print_signature
-    maxlength: 50
+  - "Attorney name, or Plantiff, if pro se": plaintiff_or_attorney_print_signature
+    maxlength: 30
 ---
 id: Attorney or Plaintiff if pro se information
 question: |
   Attorney or Plaintiff, if pro se information
 subquestion: |
-  Include address and Primary Number
+  If you are self-representing, include your information in place of attorney information. 
 fields:
-  - "Plaintiff or attorney address": plaintiff_or_attorney_address
+  - "Attorney address": plaintiff_or_attorney_address
     input type: area
     maxlength: 36
-  - "Plaintiff or attorney apt number": plaintiff_or_attorney_apt_number
+  - "Attorney apt number": plaintiff_or_attorney_apt_number
     datatype: number
-  - "Plaintiff or attorney city": plaintiff_or_attorney_city
+  - "Attorney city": plaintiff_or_attorney_city
     input type: area
     maxlength: 29
-  - "Plaintiff or attorney state": plaintiff_or_attorney_state
+  - "Attorney state": plaintiff_or_attorney_state
     input type: area
     maxlength: 8
-  - "Plaintiff or attorney city zip code": plaintiff_or_attorney_city_zip_code
+  - "Attorney city zip code": plaintiff_or_attorney_city_zip_code
     datatype: number
 ---
 id: BBO Number
@@ -354,7 +352,7 @@ subquestion: |
 fields:
   - "Current page number": current_page_number
     datatype: number
-  - "Total page number": total_page_number
+  - "Total pages, including attatchments": total_page_number
     datatype: number
 ---
 id: preview Complaint_to_Establish_Paternity
@@ -405,10 +403,6 @@ review:
     button: |
       **Plaintiff zip code**:
       ${ plaintiff_zip_code }
-  - Edit: parent_of_child_born_out_of_wedlock
-    button: |
-      **Parent of child born out of wedlock**:
-      ${ word(yesno(parent_of_child_born_out_of_wedlock)) }
   - Edit: mother_of_child_born_out_of_wedlock
     button: |
       **Mother of child born out of wedlock**:

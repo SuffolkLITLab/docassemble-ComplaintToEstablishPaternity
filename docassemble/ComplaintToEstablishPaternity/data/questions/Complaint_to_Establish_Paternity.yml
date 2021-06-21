@@ -77,7 +77,6 @@ code: |
   user_ask_role
   Informational
   division_name
-  plaintiff_address
   child_date_of_birth
   set_progress(14.29)
   defendant_address
@@ -163,28 +162,17 @@ fields:
         - Suffolk
         - Worcester
 ---
-id: Plantiff information
 question: |
-  Plantiff information
-subquestion: |
-  Provide Plaintiff full address
+  What is your name?
 fields:
-  - "Plantiff first name": plaintiff_first
-    maxlength: 25
-  - "Plaintiff last name": plaintiff_last
-    maxlength: 25
-  - "Plaintiff address": plaintiff_address
-    maxlength: 23
-  - "Plaintiff apt": plaintiff_apt
-    maxlength: 5
-  - "Plaintiff city": plaintiff_city
-    input type: area
+  - First Name: plaintiff_first
+    maxlength: 20
+  - Middle Name: plaintiff_middle
+    required: False
+  - Last Name: plaintiff_last
     maxlength: 15
-  - "Plaintiff state": plaintiff_state
-    input type: area
-    maxlength: 2
-  - "Plaintiff zip code": plaintiff_zip_code
-    datatype: number
+  - Suffix: x.name.suffix
+    required: False
 ---
 question: |
   Plantiff Relation to Child.
@@ -210,8 +198,8 @@ fields:
     maxlength: 15
   - "Child last name": child_last
     maxlength: 15
-  - "Child date of birth": child_date_of_birth
-    datatype: number
+  - "Birth date": child_date_of_birth
+    datatype: date
   - "Child address": child_address
     input type: area
     maxlength: 32
@@ -304,14 +292,23 @@ fields:
   - "Date of todays": todays_date
     datatype: date
 ---
-id: Signature
 question: |
   Signature
 subquestion: |
-  Attorney or Plaintiff, if pro se
-fields:
-  - "Attorney name, or Plantiff, if pro se": plaintiff_or_attorney_print_signature
-    maxlength: 30
+  By signing your name, you agree to
+  our terms and conditions.
+signature: plaintiff_or_attorney_print_signature
+under: |
+  ${ user }
+---
+code: |
+  user = "Signature"
+---
+question: Result of question
+subquestion: |
+  target_variable is:
+  ${ plaintiff_or_attorney_print_signature }
+mandatory: True
 ---
 id: Attorney or Plaintiff if pro se information
 question: |

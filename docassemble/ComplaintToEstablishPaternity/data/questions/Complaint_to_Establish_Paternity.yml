@@ -165,14 +165,8 @@ fields:
 question: |
   What is your name?
 fields:
-  - First Name: plaintiff_first
-    maxlength: 20
-  - Middle Name: plaintiff_middle
-    required: False
-  - Last Name: plaintiff_last
-    maxlength: 15
-  - Suffix: x.name.suffix
-    required: False
+  - "First": plaintiff_first_name
+  - "Last": plaintiff_last_name
 ---
 question: |
   Plantiff Relation to Child.

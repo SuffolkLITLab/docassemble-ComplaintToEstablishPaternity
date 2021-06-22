@@ -49,11 +49,12 @@ objects:
   - defendant_last: ALPeopleList.using(there_are_any=True)
   - plaintiff_or_attorney: ALPeopleList
   - plaintiff_first: ALPeopleList.using(ask_number=True,target_number=1)
+  - child: ALPeopleList
   - child_middle_initial: ALPeopleList
   - child_first: ALPeopleList.using(ask_number=True,target_number=1)
   - plaintiff_last: ALPeopleList.using(there_are_any=True)
   - child_current: ALPeopleList.using(there_are_any=True)
-#  - primary: ALPeopleList.using(there_are_any=True)
+  - primary: ALPeopleList.using(there_are_any=True)
   - users: ALPeopleList.using(there_are_any=True)
   - child_last: ALPeopleList.using(ask_number=True,target_number=1)
   - defendant_middle_initial: ALPeopleList
@@ -101,11 +102,11 @@ code: |
   child_current[0].age_in_years()
   child[0].birthdate
   plaintiff_middle_initial[0]
-  plaintiff_or_attorney[0].phone_number
+  primary[0].phone_number
   child_last[0]
   interview_order_Complaint_to_Establish_Paternity = True
 ---
-#  primary[0].phone_number
+#  plaintiff_or_attorney[0].phone_number
 ###################### Main order ######################
 comment: |
   This block includes the logic for standalone interviews.
@@ -671,14 +672,15 @@ review:
     button: |
       **plaintiff_middle_initial[0]**:
       ${ plaintiff_middle_initial[0] }
-   - Edit: plaintiff_or_attorney[0].phone_number
-     button: |
-       **plaintiff_or_attorney[0].phone_number**:
-       ${ plaintiff_or_attorney[0].phone_number }
-#  - Edit: primary[0].phone_number
-#    button: |
-#      **primary[0].phone_number**:
-#      ${ primary[0].phone_number }
+#  - Edit: plaintiff_or_attorney
+#   - Edit: user[0].phone_number
+#     button: |
+#       **user[0].phone_number**:
+#       ${ user[0].phone_number }
+  - Edit: primary[0].phone_number
+    button: |
+      **primary[0].phone_number**:
+      ${ primary[0].phone_number }
   - Edit: child_last[0]
     button: |
       **child_last[0]**:
@@ -736,7 +738,7 @@ attachments:
       - "child_current_age": ${ child_current[0].age_in_years() }
       - "child_birthdate": ${ child[0].birthdate }
       - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial[0] }
-      - "plaintiff_or_attorney_phone_number": ${ plaintiff_or_attorney[0].phone_number }
+      - "plaintiff_or_attorney_phone_number": ${ plaintiff_or_attorney.phone_number }
 #      - "primary_phone_number": ${ primary[0].phone_number }
       - "child_last_name": ${ child_last[0] }
       - "division_name": ${ division_name }

@@ -98,7 +98,7 @@ code: |
   defendant_last
   defendant_middle_initial
   set_progress(57.14)
-  child_first[0]
+  child_first
   child_current[0].age_in_years()
   child[0].birthdate
   plaintiff_middle_initial
@@ -205,10 +205,14 @@ fields:
 ---
 id: Child information
 question: |
-  What is the childs date of birth?
+  Enter the child's information.
 fields:
-  - no label: child_date_of_birth
-    datatype: date
+   - Child first name: child_first
+   - Child middle initial: child_middle_initial
+     required: false
+   - Child last name: child_last
+   - Child birthday: child_date_of_birth
+     datatype: date
 ---
 question: |
   Hello, ${ user_first_name } ${ user_last_name }!
@@ -633,10 +637,10 @@ review:
     button: |
       **defendant_middle_initial[0]**:
       ${ defendant_middle_initial[0] }
-  - Edit: child_first[0]
+  - Edit: child_first
     button: |
-      **child_first[0]**:
-      ${ child_first[0] }
+      **child_first**:
+      ${ child_first }
   - Edit: child_current[0].age_in_years
     button: |
       **child_current[0].age_in_years**:
@@ -658,10 +662,10 @@ review:
     button: |
       **primary[0].phone_number**:
       ${ primary[0].phone_number }
-  - Edit: child_last[0]
+  - Edit: child_last
     button: |
-      **child_last[0]**:
-      ${ child_last[0] }
+      **child_last**:
+      ${ child_last }
 ---
 id: download Complaint_to_Establish_Paternity
 event: Complaint_to_Establish_Paternity_download
@@ -711,13 +715,13 @@ attachments:
       - "plaintiff_first_name": ${ plaintiff_first[0] }
       - "defendant_last_name": ${ defendant_last[0] }
       - "defendant_middle_initial_name": ${ defendant_middle_initial[0] }
-      - "child_first_name": ${ child_first[0] }
+      - "child_first_name": ${ child_first }
       - "child_current_age": ${ child_current[0].age_in_years() }
       - "child_birthdate": ${ child[0].birthdate }
       - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial[0] }
       - "plaintiff_or_attorney_phone_number": ${ plaintiff_or_attorney.phone_number }
 #      - "primary_phone_number": ${ primary[0].phone_number }
-      - "child_last_name": ${ child_last[0] }
+      - "child_last_name": ${ child_last }
       - "division_name": ${ division_name }
       - "plaintiff_address": ${ plaintiff_address }
       - "plaintiff_apt": ${ plaintiff_apt }
@@ -804,7 +808,7 @@ attachments:
       - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial }
       - "plaintiff_or_attorney_phone_number": ${ plaintiff_or_attorney[0].phone_number }
 #      - "primary_phone_number": ${ primary[0].phone_number }
-      - "child_last_name": ${ child_last[0] }
+      - "child_last_name": ${ child_last }
       - "division_name": ${ division_name }
       - "plaintiff_address": ${ plaintiff_address }
       - "plaintiff_apt": ${ plaintiff_apt }

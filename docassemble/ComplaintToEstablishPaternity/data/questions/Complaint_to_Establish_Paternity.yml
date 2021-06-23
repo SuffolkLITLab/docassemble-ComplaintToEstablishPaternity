@@ -320,6 +320,12 @@ fields:
   - State: plaintiff_or_attorney_state
   - Zip: plaintiff_or_attorney_city_zip_code
 ---
+question: |
+  Sign your name
+signature: plaintiff_or_attorney_signature
+under: |
+  ${ user }
+---
 id: BBO Number
 question: |
   BBO Number

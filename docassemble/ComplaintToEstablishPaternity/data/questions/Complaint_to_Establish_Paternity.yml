@@ -78,7 +78,7 @@ code: |
   user_ask_role
   Informational
   division_name
-  plaintiff_address
+  
   child_date_of_birth
   set_progress(14.29)
   defendant_address
@@ -167,27 +167,25 @@ fields:
         - Worcester
 ---
 id: Plantiff information
-question: |
-  Plantiff information
-subquestion: |
-  Provide Plaintiff full address
+question: What is your name?
 fields:
-  - "Plantiff first name": plaintiff_first
-    maxlength: 25
-  - "Plaintiff last name": plaintiff_last
-    maxlength: 25
-  - "Plaintiff address": plaintiff_address
-    maxlength: 23
-  - "Plaintiff apt": plaintiff_apt
-    maxlength: 5
-  - "Plaintiff city": plaintiff_city
-    input type: area
-    maxlength: 15
-  - "Plaintiff state": plaintiff_state
-    input type: area
-    maxlength: 2
-  - "Plaintiff zip code": plaintiff_zip_code
-    datatype: number
+  - First: plaintiff_first_name
+  - Last: plaintiff_last_name
+--- 
+id: Plaintiff Information
+question: |
+  Enter your address
+fields:
+  - "Address": plaintiff_address
+  - "Unit": plaintiff_apt_number
+    required: False
+  - "City": plaintiff_city
+  - "State": plaintiff_state
+  - "Zip": plaintiff_zip_code
+---
+question: |
+  Hello, ${ user_first_name } ${ user_last_name }!
+mandatory: True
 ---
 question: |
   Plantiff Relation to Child.
@@ -205,57 +203,40 @@ fields:
 ---
 id: Child information
 question: |
-  Child information
-subquestion: |
-  The child who is the subject of the complaint:
+  What is the childs date of birth?
 fields:
-  - "Child first name": child_first
-    maxlength: 15
-  - "Child last name": child_last
-    maxlength: 15
-  - "Child date of birth": child_date_of_birth
-    datatype: number
-  - "Child address": child_address
-    input type: area
-    maxlength: 32
-  - "Child apt number": child_apt_number
-    datatype: number
-  - "Child city": child_city
-    input type: area
-    maxlength: 21
-  - "Child state": child_state
-    input type: area
-    maxlength: 11
-  - "Child zip code": child_zip_code
-    datatype: number
+  - no label: child_date_of_birth
+    datatype: date
+---
+question: |
+  Hello, ${ user_first_name } ${ user_last_name }!
+mandatory: True
 ---
 id: Defendant information
 question: |
   Defendant information
-subquestion: |
-  Defendants information
 fields:
   - "Defendant first name": defendant_first
     maxlength: 15
   - "Defendant last name": defendant_last
     maxlength: 15
-  - "Defendant address": defendant_address
-    input type: area
-    maxlength: 24
-  - "Defendant apt number": defendant_apt_number
-    datatype: number
-  - "Defendant city": defendant_city
-    input type: area
-    maxlength: 19
-  - "Defendant state": defendant_state
-    input type: area
-    maxlength: 7
-  - "Defendant zip code": defendant_zip_code
-    datatype: number
   - "Defendant is mother of child": defendant_is_mother_of_child
     datatype: yesno
   - "Defendant is father of child": defendant_is_father_of_child
     datatype: yesno
+---
+objects:
+  - the_address: Address
+---
+question: |
+  Enter Defendant's address
+fields:
+  - Address: defendant_address
+  - Unit: defendant_apt_number
+    required: False
+  - City: defendant_city
+  - State: defendant_state
+  - Zip: defendant_zip_code
 ---
 id: Plaintiff request
 question: |
@@ -318,23 +299,16 @@ fields:
 ---
 id: Attorney or Plaintiff if pro se information
 question: |
-  Attorney or Plaintiff, if pro se information
+  Attorney or Plaintiff (if pro se) information
 subquestion: |
   If you are self-representing, include your information in place of attorney information. 
 fields:
-  - "Attorney address": plaintiff_or_attorney_address
-    input type: area
-    maxlength: 36
-  - "Attorney apt number": plaintiff_or_attorney_apt_number
-    datatype: number
-  - "Attorney city": plaintiff_or_attorney_city
-    input type: area
-    maxlength: 29
-  - "Attorney state": plaintiff_or_attorney_state
-    input type: area
-    maxlength: 8
-  - "Attorney city zip code": plaintiff_or_attorney_city_zip_code
-    datatype: number
+  - Address: plaintiff_or_attorney_address
+  - Unit: plaintiff_or_attorney_apt_number
+    required: False
+  - City: plaintiff_or_attorney_city
+  - State: plaintiff_or_attorney_state
+  - Zip: plaintiff_or_attorney_city_zip_code
 ---
 id: BBO Number
 question: |
@@ -664,10 +638,10 @@ review:
     button: |
       **child_current[0].age_in_years**:
       ${ child_current[0].age_in_years }
-  - Edit: child[0].birthdate
+  - Edit: child_date_of_birth
     button: |
       **child[0].bithdate**:
-      ${ child[0].birthdate }
+      ${ child_date_of_birth }
   - Edit: plaintiff_middle_initial[0]
     button: |
       **plaintiff_middle_initial[0]**:

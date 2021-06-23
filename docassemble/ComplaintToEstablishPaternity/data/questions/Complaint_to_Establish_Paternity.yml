@@ -78,9 +78,10 @@ code: |
   user_ask_role
   Informational
   division_name
-  
+  child_address
   child_date_of_birth
   set_progress(14.29)
+  plaintiff_address
   defendant_address
   adjudicate_to_be_father_of_child
   todays_date
@@ -102,7 +103,7 @@ code: |
   child_current[0].age_in_years()
   child[0].birthdate
   plaintiff_middle_initial
-  primary[0].phone_number
+
   child_last
   interview_order_Complaint_to_Establish_Paternity = True
 ---
@@ -173,35 +174,30 @@ fields:
   - Last: plaintiff_last
 ---
 question: |
-  What is your address?
+  Enter your address
 fields:
   - Address: plaintiff_address
-    address autocomplete: True
+  - Unit: plaintiff_apt
+    required: False
   - City: plaintiff_city
   - State: plaintiff_state
-    code: |
-      states_list()
-  - Zip: plaintiffzip
-    required: False
-  - County: plaintiff_county
----
-question: |
-  Hello, ${ plaintiff_first_name } ${ plaintiff_last_name }!
-mandatory: True
+  - Zip: plaintiff_zip_code
 ---
 question: |
   Plantiff Relation to Child.
 fields:
   - Relationship to child: relationship
     choices:
-      - Mother of Child: mother_of_child 
-      - Father of Child: father_of_child
-      - Guardian or Custodian of Child: guardian_or_custodian_of_child
-      - Personal Representative of Child: personal_representative_of_child
-      - Personal Representative for mother/father of child
-      - Department of children and families
-      - An agency licensed under GLC 28a
-      - Department of revenue
+      - Mother of Child: mother_of_child_born_out_of_wedlock 
+      - Father of Child: father_of_child_born_out_of_wedlock
+      - Guardian of Child: guardian_of_child_born_out_of_wedlock
+      - Custodian of Child: custodian_of_child_born_out_of_wedlock
+      - Personal Representative of Child: personal_representative_of_child_born_out_of_wedlock
+      - Personal Representative for mother of child: parent_or_representative_of_mother_of_child_born_out_of_wedlock
+      - Personal Representative for father of child: parent_or_representative_of_father_of_child_born_out_of_wedlock
+      - Department of children and families: department_of_children_and_families
+      - An agency licensed under GLC 28a: an_agency_licensed_under_g_l_c_twenty_eight_a
+      - Department of revenue: department_of_revenue 
 ---
 id: Child information
 question: |
@@ -213,6 +209,16 @@ fields:
    - Child last name: child_last
    - Child birthday: child_date_of_birth
      datatype: date
+---
+question: |
+  Enter Child's address
+fields:
+  - Address: child_address
+  - Unit: child_apt_number
+    required: False
+  - City: child_city
+  - State: child_state
+  - Zip: child_zip_code
 ---
 question: |
   Hello, ${ user_first_name } ${ user_last_name }!
@@ -830,12 +836,12 @@ attachments:
       - "department_of_children_and_families": ${ department_of_children_and_families }
       - "an_agency_licensed_under_g_l_c_twenty_eight_a": ${ an_agency_licensed_under_g_l_c_twenty_eight_a }
       - "department_of_revenue": ${ department_of_revenue }
-      - "child_date_of_birth": ${ "{:,.2f}".format(child_date_of_birth) }
+      - "child_date_of_birth": ${ "{:,.2f}".format( child_date_of_birth) }
       - "child_address": ${ child_address }
-      - "child_apt_number": ${ "{:,.2f}".format(child_apt_number) }
+      - "child_apt_number": ${ "{:,.2f}".format( child_apt_number) }
       - "child_city": ${ child_city }
       - "child_state": ${ child_state }
-      - "child_zip_code": ${ "{:,.2f}".format(child_zip_code) }
+      - "child_zip_code": ${ "{:,.2f}".format( child_zip_code) }
       - "defendant_address": ${ defendant_address }
       - "defendant_apt_number": ${ "{:,.2f}".format(defendant_apt_number) }
       - "defendant_city": ${ defendant_city }

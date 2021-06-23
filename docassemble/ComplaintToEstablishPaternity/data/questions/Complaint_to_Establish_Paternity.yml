@@ -46,20 +46,20 @@ code: |
   al_form_type = 'existing_case'
 ---
 objects:
-  - defendant_last: ALPeopleList.using(there_are_any=True)
+  - defendant_last: ALPeopleList
   - plaintiff_or_attorney: ALPeopleList
-  - plaintiff_first: ALPeopleList.using(ask_number=True,target_number=1)
+  - plaintiff_first: ALPeopleList
   - child: ALPeopleList
   - child_middle_initial: ALPeopleList
-  - child_first: ALPeopleList.using(ask_number=True,target_number=1)
-  - plaintiff_last: ALPeopleList.using(there_are_any=True)
+  - child_first: ALPeopleList
+  - plaintiff_last: ALPeopleList
   - child_current: ALPeopleList.using(there_are_any=True)
   - primary: ALPeopleList.using(there_are_any=True)
   - users: ALPeopleList.using(there_are_any=True)
-  - child_last: ALPeopleList.using(ask_number=True,target_number=1)
+  - child_last: ALPeopleList
   - defendant_middle_initial: ALPeopleList
   - plaintiff_or_attorney_print: ALPeopleList
-  - defendant_first: ALPeopleList.using(ask_number=True,target_number=1)
+  - defendant_first: ALPeopleList
   - plaintiff_middle_initial: ALPeopleList
 ---
 sections:
@@ -90,20 +90,20 @@ code: |
   board_of_bar_overseers_number
   current_page_number
   docket_number
-  defendant_first[0]
-  plaintiff_last[0]
+  defendant_first
+  plaintiff_last
   set_progress(42.86)
-  child_middle_initial[0]
-  plaintiff_first[0]
-  defendant_last[0]
-  defendant_middle_initial[0]
+  child_middle_initial
+  plaintiff_first
+  defendant_last
+  defendant_middle_initial
   set_progress(57.14)
   child_first[0]
   child_current[0].age_in_years()
   child[0].birthdate
-  plaintiff_middle_initial[0]
+  plaintiff_middle_initial
   primary[0].phone_number
-  child_last[0]
+  child_last
   interview_order_Complaint_to_Establish_Paternity = True
 ---
 #  plaintiff_or_attorney[0].phone_number
@@ -166,25 +166,27 @@ fields:
         - Suffolk
         - Worcester
 ---
-id: Plantiff information
-question: What is your name?
-fields:
-  - First: plaintiff_first_name
-  - Last: plaintiff_last_name
---- 
-id: Plaintiff Information
 question: |
-  Enter your address
+  Enter your name
 fields:
-  - "Address": plaintiff_address
-  - "Unit": plaintiff_apt_number
-    required: False
-  - "City": plaintiff_city
-  - "State": plaintiff_state
-  - "Zip": plaintiff_zip_code
+  - First: plaintiff_first
+  - Last: plaintiff_last
 ---
 question: |
-  Hello, ${ user_first_name } ${ user_last_name }!
+  What is your address?
+fields:
+  - Address: plaintiff_address
+    address autocomplete: True
+  - City: plaintiff_city
+  - State: plaintiff_state
+    code: |
+      states_list()
+  - Zip: plaintiffzip
+    required: False
+  - County: plaintiff_county
+---
+question: |
+  Hello, ${ plaintiff_first_name } ${ plaintiff_last_name }!
 mandatory: True
 ---
 question: |
@@ -192,10 +194,10 @@ question: |
 fields:
   - Relationship to child: relationship
     choices:
-      - Mother of Child 
-      - Father of Child
-      - Guardian or Custodian of Child
-      - Personal Representative of Child
+      - Mother of Child: mother_of_child 
+      - Father of Child: father_of_child
+      - Guardian or Custodian of Child: guardian_or_custodian_of_child
+      - Personal Representative of Child: personal_representative_of_child
       - Personal Representative for mother/father of child
       - Department of children and families
       - An agency licensed under GLC 28a
@@ -214,12 +216,10 @@ mandatory: True
 ---
 id: Defendant information
 question: |
-  Defendant information
+  Enter opposing party (the defendants) name.
 fields:
-  - "Defendant first name": defendant_first
-    maxlength: 15
-  - "Defendant last name": defendant_last
-    maxlength: 15
+  - Defendant first name: defendant_first
+  - Defendant last name: defendant_last
   - "Defendant is mother of child": defendant_is_mother_of_child
     datatype: yesno
   - "Defendant is father of child": defendant_is_father_of_child
@@ -314,10 +314,11 @@ id: BBO Number
 question: |
   BBO Number
 subquestion: |
-  Board of Bar Overseer Number
+  Board of Bar Overseer Number (if you are an attorney)
 fields:
   - "Board of bar overseers number": board_of_bar_overseers_number
     datatype: number
+    required: false
 ---
 id: Page Number
 question: |
@@ -327,8 +328,10 @@ subquestion: |
 fields:
   - "Current page number": current_page_number
     datatype: number
+    required: false
   - "Total pages, including attatchments": total_page_number
     datatype: number
+    required: false
 ---
 id: preview Complaint_to_Establish_Paternity
 question: |
@@ -788,17 +791,17 @@ attachments:
     pdf template file: Complaint_to_Establish_Paternity_New_Labelled.pdf
     fields:
       - "docket_number": ${ docket_number }
-      - "defendant_first_name": ${ defendant_first[0] }
-      - "plaintiff_last_name": ${ plaintiff_last[0] }
+      - "defendant_first_name": ${ defendant_first }
+      - "plaintiff_last_name": ${ plaintiff_last }
       - "plaintiff_or_attorney_signature": ${ plaintiff_or_attorney[0].signature }
-      - "child_middle_initial_name": ${ child_middle_initial[0] }
-      - "plaintiff_first_name": ${ plaintiff_first[0] }
-      - "defendant_last_name": ${ defendant_last[0] }
-      - "defendant_middle_initial_name": ${ defendant_middle_initial[0] }
-      - "child_first_name": ${ child_first[0] }
+      - "child_middle_initial_name": ${ child_middle_initial }
+      - "plaintiff_first_name": ${ plaintiff_first }
+      - "defendant_last_name": ${ defendant_last }
+      - "defendant_middle_initial_name": ${ defendant_middle_initial }
+      - "child_first_name": ${ child_first }
       - "child_current_age": ${ child_current[0].age_in_years() }
       - "child_birthdate": ${ child[0].birthdate }
-      - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial[0] }
+      - "plaintiff_middle_initial_name": ${ plaintiff_middle_initial }
       - "plaintiff_or_attorney_phone_number": ${ plaintiff_or_attorney[0].phone_number }
 #      - "primary_phone_number": ${ primary[0].phone_number }
       - "child_last_name": ${ child_last[0] }

@@ -216,12 +216,10 @@ mandatory: True
 ---
 id: Defendant information
 question: |
-  Defendant information
+  Enter opposing party (the defendants) name.
 fields:
-  - "Defendant first name": defendant_first_name
-    maxlength: 15
-  - "Defendant last name": defendant_last_name
-    maxlength: 15
+  - Defendant first name: defendant_first
+  - Defendant last name: defendant_last
   - "Defendant is mother of child": defendant_is_mother_of_child
     datatype: yesno
   - "Defendant is father of child": defendant_is_father_of_child
